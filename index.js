@@ -28,14 +28,22 @@ async function run() {
     // await client.connect();
     const doctorsCollection = client.db('doctorTicketDB').collection('doctors');
 
+
+    
+   app.get('/doctors', async(req, res) =>{
+    const cursor = doctorsCollection.find()
+    const result = await cursor.toArray()
+    res.send(result);
+   })
+
+
+
     app.post('/doctors', async(req, res) =>{
         const doctors = req.body;
         const result = await doctorsCollection.insertOne(doctors)
         res.send(result);
     })
   
-
-
 
 
     await client.db("admin").command({ ping: 1 });
