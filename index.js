@@ -4,13 +4,14 @@ const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 5000;
 
+
 //middleware 
 app.use(cors());
 app.use(express.json());
 
 
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = `mongodb+srv://${process.env.DB_User}:${process.env.DB_Password}@cluster0.qvgg1my.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 
@@ -36,7 +37,12 @@ async function run() {
     res.send(result);
    })
 
-
+   app.get('/doctors/:id', async(req, res) =>{
+    const id = req.params.id;
+    const query = {_id: new ObjectId(id)}
+    const result = await doctorsCollection.findOne(query);
+    res.send(result);
+   })
 
     app.post('/doctors', async(req, res) =>{
         const doctors = req.body;
